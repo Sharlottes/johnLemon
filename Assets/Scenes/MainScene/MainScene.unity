@@ -5630,6 +5630,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 416268913109267447, guid: 1642593c99ada5c4eaf09ef18473de97,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1086049625}
+    - target: {fileID: 416268913109267447, guid: 1642593c99ada5c4eaf09ef18473de97,
+        type: 3}
+      propertyPath: playerName
+      value: John Lemon
+      objectReference: {fileID: 0}
     - target: {fileID: 3190072270426104674, guid: 1642593c99ada5c4eaf09ef18473de97,
         type: 3}
       propertyPath: m_RootOrder
