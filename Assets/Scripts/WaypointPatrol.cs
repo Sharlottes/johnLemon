@@ -67,11 +67,9 @@ namespace Assets.Scripts
             )
             {
                 float distance = Vector3.Distance(Player.Instance.transform.position, transform.position);
-                Debug.Log(distance);
-
-                    m_detectIndicator.isDetecting = true;
-                    m_delay = 0.1f;
-                    m_AnimationCoroutine ??= StartCoroutine(LookAroundAnimation());
+                m_detectIndicator.isDetecting = true;
+                m_delay = 0.1f;
+                m_AnimationCoroutine ??= StartCoroutine(LookAroundAnimation());
             }
             else
             {
@@ -89,6 +87,7 @@ namespace Assets.Scripts
                     StopCoroutine(m_AnimationCoroutine);
                     m_AnimationCoroutine = null;
                 }
+
                 if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
                 {
                     m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
