@@ -14,7 +14,9 @@ public class PlayerName : MonoBehaviour
 
     void Start()
     {
-        m_nameText = Instantiate(nameTextPref, canvas.transform).GetComponent<TMP_Text>();
+        GameObject nameTextGO = Instantiate(nameTextPref, canvas.transform);
+        nameTextGO.transform.SetSiblingIndex(0);
+        m_nameText = nameTextGO.GetComponent<TMP_Text>();
         m_nameText.SetText(playerName);
         m_nameText.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f));
     }
