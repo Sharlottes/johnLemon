@@ -6,20 +6,17 @@ namespace Assets.Scripts
 {
     public class Observer : MonoBehaviour
     {
-        public Transform player;
-        public GameEnding gameEnding;
-
         bool m_IsPlayerInRange;
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.transform == player)
+            if (other.transform == Player.Instance.transform)
                 m_IsPlayerInRange = true;
         }
 
         void OnTriggerExit(Collider other)
         {
-            if (other.transform == player)
+            if (other.transform == Player.Instance.transform)
                 m_IsPlayerInRange = false;
         }
 
@@ -27,11 +24,11 @@ namespace Assets.Scripts
         {
             if (m_IsPlayerInRange)
             {
-                Vector3 direction = player.position - transform.position + Vector3.up;
+                Vector3 direction = Player.Instance.transform.position - transform.position + Vector3.up;
                 Ray ray = new(transform.position, direction);
-                if (Physics.Raycast(ray, out RaycastHit raycastHit) && raycastHit.collider.transform == player)
+                if (Physics.Raycast(ray, out RaycastHit raycastHit) && raycastHit.collider.transform == Player.Instance.transform)
                 {
-                    gameEnding.CaughtPlayer();
+                    GameEnding.Instance.CaughtPlayer();
                 }
             }
         }

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Structs.Singleton;
 
 namespace Assets.Scripts
 {
-    public class GameEnding : MonoBehaviour
+    public class GameEnding : SingletonMonoBehaviour<GameEnding>
     {
         public float fadeDuration = 1f;
         public float displayImageDuration = 1f;
-        public GameObject player;
         public CanvasGroup exitBackgroundImageCanvasGroup, caughtBackgroundImageCanvasGroup;
         public AudioSource exitAudio, caughtAudio;
 
@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject == player)
+            if (other.gameObject == Player.Instance.gameObject)
             {
                 m_IsPlayerAtExit = true;
             }
