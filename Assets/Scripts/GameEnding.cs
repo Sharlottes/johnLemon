@@ -40,7 +40,7 @@ public class GameEnding : MonoBehaviour
         }
     }
 
-    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)
+    void EndLevel(CanvasGroup imageCanvasGroup, bool doAutoRestart, AudioSource audioSource)
     {
         if (!m_HasAudioPlayed)
         {
@@ -52,14 +52,10 @@ public class GameEnding : MonoBehaviour
 
         if (m_Timer > fadeDuration + displayImageDuration)
         {
-            if (doRestart)
-            {
-                SceneManager.LoadScene(0);
-            }
-            else
-            {
-                Application.Quit();
-            }
+            if (doAutoRestart) RestartGame();
         }
     }
+
+    public void RestartGame() => SceneManager.LoadScene(0);
+    public void EndGame() => Application.Quit();
 }
