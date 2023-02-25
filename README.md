@@ -8,7 +8,7 @@
 ## TODO
 
 - [ ] 필수 기능부 구현
-  - [ ] UI 추가 제작
+  - [x] UI 추가 제작
   - [ ] 적 AI 개발
   - [ ] PlayerPrefs을 이용한 데이터 저장
 - [ ] [포트폴리오에 프로젝트 페이지](https://sharjects-sharlottes.vercel.app/projects/johnLemon) 추가
@@ -25,7 +25,7 @@
     - [ ] 살금살금 걷기: `ctrl`
     - [ ] 폭죽 터트리기: `e`
   - [ ] 씬 확장
-    - [ ] 재시도 UI버튼 추가
+    - [x] 재시도 UI버튼 추가
     - [ ] 게임 씬 / 메인 씬 분리 구현
 
 ## License
