@@ -7,16 +7,14 @@ namespace Assets.Scripts
 {
     public class PlayerName : MonoBehaviour
     {
-        public Canvas canvas;
         public string playerName;
         public GameObject nameTextPref;
-        public float nameTextFollowSpeed = 5;
 
         TMP_Text m_nameText;
 
         void Start()
         {
-            GameObject nameTextGO = Instantiate(nameTextPref, canvas.transform);
+            GameObject nameTextGO = Instantiate(nameTextPref, Canvas.Instance.transform);
             nameTextGO.transform.SetSiblingIndex(0);
             m_nameText = nameTextGO.GetComponent<TMP_Text>();
             m_nameText.SetText(playerName);
@@ -25,7 +23,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            m_nameText.transform.position = Vector3.Lerp(m_nameText.transform.position, Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f)), nameTextFollowSpeed * Time.deltaTime);
+            m_nameText.transform.position = Vector3.Lerp(m_nameText.transform.position, Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f)), 5 * Time.deltaTime);
         }
     }
 }

@@ -3728,7 +3728,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 1
   displayImageDuration: 1
-  player: {fileID: 487627675}
   exitBackgroundImageCanvasGroup: {fileID: 519505133}
   caughtBackgroundImageCanvasGroup: {fileID: 1147765741}
   exitAudio: {fileID: 1099770505}
@@ -4980,6 +4979,7 @@ GameObject:
   - component: {fileID: 1086049626}
   - component: {fileID: 1086049625}
   - component: {fileID: 1086049627}
+  - component: {fileID: 1086049628}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5047,6 +5047,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1086049628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086049622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0589087066ed45439bddc98c6ff3657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1099770504
 GameObject:
   m_ObjectHideFlags: 0
