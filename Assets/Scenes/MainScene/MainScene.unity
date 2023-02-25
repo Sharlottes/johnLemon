@@ -5638,7 +5638,7 @@ PrefabInstance:
     - target: {fileID: 416268913109267447, guid: 1642593c99ada5c4eaf09ef18473de97,
         type: 3}
       propertyPath: playerName
-      value: "\uC874 \uB798\uBAAC"
+      value: "\uC874 "
       objectReference: {fileID: 0}
     - target: {fileID: 3190072270426104674, guid: 1642593c99ada5c4eaf09ef18473de97,
         type: 3}
