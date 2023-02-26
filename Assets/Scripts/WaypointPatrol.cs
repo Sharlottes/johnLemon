@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
+using Assets.Scripts.Structs;
 
 namespace Assets.Scripts
 {
@@ -17,12 +18,14 @@ namespace Assets.Scripts
 
         int m_CurrentWaypointIndex;
         PatrolDetectIndicator m_detectIndicator;
-        Coroutine m_AnimationCoroutine;
+        SingleCoroutineController m_LookAroundCoroutineController;
+
         Animator m_Animator;
 
         void Start()
         {
             m_Animator = GetComponent<Animator>();
+            m_LookAroundCoroutineController = new(this, LookAroundAnimation);
 
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
@@ -39,7 +42,7 @@ namespace Assets.Scripts
                 if (t >= 1) toLeft = true;
                 float rotateAmount = (toLeft ? -1 : 1);
                 t += Time.deltaTime * rotateAmount;
-                transform.Rotate(new(0, 1), rotateAmount / 6);
+                transform.Rotate(new(0, 1), Convert.ToSingle(rotateAmount * Math.PI / 4f));
                 yield return null;
             }
         }
@@ -54,11 +57,7 @@ namespace Assets.Scripts
             {
                 m_Animator.SetBool("IsFound", true);
                 navMeshAgent.isStopped = false;
-                if (m_AnimationCoroutine != null)
-                {
-                    StopCoroutine(m_AnimationCoroutine);
-                    m_AnimationCoroutine = null;
-                }
+                m_LookAroundCoroutineController.Stop();
                 navMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
             }
             else if (
@@ -70,10 +69,9 @@ namespace Assets.Scripts
                 raycastHit.collider.transform == Player.Instance.transform
             )
             {
-                float distance = Vector3.Distance(Player.Instance.transform.position, transform.position);
                 m_detectIndicator.isDetecting = true;
+                m_LookAroundCoroutineController.Start();
                 m_delay = 0.1f;
-                m_AnimationCoroutine ??= StartCoroutine(LookAroundAnimation());
             }
             else
             {
@@ -85,12 +83,7 @@ namespace Assets.Scripts
                     return;
                 }
                 m_detectIndicator.isDetecting = false;
-
-                if (m_AnimationCoroutine != null)
-                {
-                    StopCoroutine(m_AnimationCoroutine);
-                    m_AnimationCoroutine = null;
-                }
+                m_LookAroundCoroutineController.Stop();
 
                 if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
                 {
