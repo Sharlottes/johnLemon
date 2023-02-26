@@ -18,9 +18,12 @@ namespace Assets.Scripts
         int m_CurrentWaypointIndex;
         PatrolDetectIndicator m_detectIndicator;
         Coroutine m_AnimationCoroutine;
+        Animator m_Animator;
 
         void Start()
         {
+            m_Animator = GetComponent<Animator>();
+
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
             m_detectIndicator = DetectIndicatorGO.GetComponent<PatrolDetectIndicator>();
@@ -49,6 +52,7 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
+                m_Animator.SetBool("IsFound", true);
                 navMeshAgent.isStopped = false;
                 if (m_AnimationCoroutine != null)
                 {
