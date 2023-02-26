@@ -17,6 +17,7 @@ public class StarGroup : SingletonMonoBehaviour<StarGroup>
         set
         {
             m_StarPoint = value;
+            PlayerPrefs.SetInt("starPoint", value);
             UpdateStarImages();
         }
     } 
