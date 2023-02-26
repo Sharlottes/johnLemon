@@ -16,6 +16,7 @@ namespace Assets.Scripts
         public float detectRange = 2f;
         public GameObject detectIndicatorPref;
 
+        bool m_IsFound;
         int m_CurrentWaypointIndex;
         PatrolDetectIndicator m_detectIndicator;
         SingleCoroutineController m_LookAroundCoroutineController;
@@ -55,6 +56,13 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
+                //TODO: find state -> enum 리팩토링 시급 코드 겁나 더러움
+                if (!m_IsFound)
+                {
+                    StarGroup.Instance.StarPoint++;
+                    m_IsFound = true;
+                }
+
                 if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
                     m_Animator.SetBool("IsFound", true);
                 
