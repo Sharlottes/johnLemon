@@ -55,7 +55,9 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
-                m_Animator.SetBool("IsFound", true);
+                if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
+                    m_Animator.SetBool("IsFound", true);
+                
                 navMeshAgent.isStopped = false;
                 m_LookAroundCoroutineController.Stop();
                 navMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
