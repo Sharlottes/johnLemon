@@ -11,9 +11,13 @@ namespace Assets.Scripts.Structs
     internal class SingleCoroutineController
     {
         Coroutine m_CurrentCoroutine;
-        readonly Func<IEnumerator> m_CoroutineInvoker;
+        readonly Func<IEnumerator>? m_CoroutineInvoker;
         readonly MonoBehaviour m_MB;
 
+        public SingleCoroutineController(MonoBehaviour MB)
+        {
+            m_MB = MB;
+        }
         public SingleCoroutineController(MonoBehaviour MB, Func<IEnumerator> coroutineInvoker)
         {
             m_MB = MB;

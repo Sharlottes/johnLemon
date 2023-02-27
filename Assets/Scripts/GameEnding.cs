@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Structs.Singleton;
+using Assets.Scripts.Structs;
+using Unity.VisualScripting;
 
 namespace Assets.Scripts
 {
@@ -13,48 +15,45 @@ namespace Assets.Scripts
         public CanvasGroup exitBackgroundImageCanvasGroup, caughtBackgroundImageCanvasGroup;
         public AudioSource exitAudio, caughtAudio;
 
-        bool m_IsPlayerAtExit, m_IsPlayerCaught;
-        float m_Timer;
-        bool m_HasAudioPlayed;
+        SingleCoroutineController m_EndLevelCoroutineController;
+
+        private void Start()
+        {
+            m_EndLevelCoroutineController = new(this);
+        }
 
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == Player.Instance.gameObject)
             {
-                m_IsPlayerAtExit = true;
+                WinPlayer();
             }
         }
 
+        //TODO: 아니 솔직히 이거 씬 전환하는거 같은데
+        public void WinPlayer()
+        {
+            m_EndLevelCoroutineController.Start(EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio));
+        }
         public void CaughtPlayer()
         {
-            m_IsPlayerCaught = true;
+            m_EndLevelCoroutineController.Start(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
         }
 
-        void Update()
+        IEnumerator EndLevel(CanvasGroup imageCanvasGroup, bool doAutoRestart, AudioSource audio)
         {
-            if (m_IsPlayerAtExit)
+            audio.Play();
+            float t = 0;
+            while(true)
             {
-                EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
-            }
-            else if (m_IsPlayerCaught)
-            {
-                EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
-            }
-        }
+                t += Time.deltaTime;
+                imageCanvasGroup.alpha = t / fadeDuration;
 
-        void EndLevel(CanvasGroup imageCanvasGroup, bool doAutoRestart, AudioSource audioSource)
-        {
-            if (!m_HasAudioPlayed)
-            {
-                audioSource.Play();
-                m_HasAudioPlayed = true;
-            }
-            m_Timer += Time.deltaTime;
-            imageCanvasGroup.alpha = m_Timer / fadeDuration;
-
-            if (m_Timer > fadeDuration + displayImageDuration)
-            {
-                if (doAutoRestart) RestartGame();
+                if (t > fadeDuration + displayImageDuration)
+                {
+                    if (doAutoRestart) RestartGame();
+                    yield break;
+                }
             }
         }
 
