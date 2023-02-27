@@ -56,7 +56,7 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
-                //TODO: find state -> enum ¸®ÆÑÅä¸µ ½Ã±Þ ÄÚµå °Ì³ª ´õ·¯¿ò
+                //TODO: find state -> enum ï¿½ï¿½ï¿½ï¿½ï¿½ä¸µ ï¿½Ã±ï¿½ ï¿½Úµï¿½ ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½
                 if (!m_IsFound)
                 {
                     StarGroup.Instance.StarPoint++;
