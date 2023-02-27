@@ -29,7 +29,12 @@ namespace Assets.Scripts.Structs
         public void Start(Func<IEnumerator> coroutineInvoker, bool restartOnDuplicated = false)
         {
             if (restartOnDuplicated) Stop();
-            m_CurrentCoroutine ??= CoroutineInvoker.Instance.StartCoroutine(coroutineInvoker());
+            IEnumerator coroutineWrapper() 
+            {
+                yield return coroutineInvoker();
+                m_CurrentCoroutine = null;
+            }
+            m_CurrentCoroutine ??= CoroutineInvoker.Instance.StartCoroutine(coroutineWrapper());
         }
         public void Stop()
         {

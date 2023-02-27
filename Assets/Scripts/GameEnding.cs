@@ -27,11 +27,11 @@ namespace Assets.Scripts
         //TODO: 아니 솔직히 이거 씬 전환하는거 같은데
         public void WinPlayer()
         {
-            m_EndLevelCoroutineController.Start(EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio));
+            m_EndLevelCoroutineController.Start(() => EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio));
         }
         public void CaughtPlayer()
         {
-            m_EndLevelCoroutineController.Start(EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
+            m_EndLevelCoroutineController.Start(() => EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio));
         }
 
         IEnumerator EndLevel(CanvasGroup imageCanvasGroup, bool doAutoRestart, AudioSource audio)
@@ -48,6 +48,8 @@ namespace Assets.Scripts
                     if (doAutoRestart) RestartGame();
                     yield break;
                 }
+
+                yield return null;
             }
         }
 
