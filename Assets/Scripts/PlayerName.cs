@@ -23,7 +23,11 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            m_nameText.transform.position = Vector3.Lerp(m_nameText.transform.position, Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f)), 5 * Time.deltaTime);
+            m_nameText.transform.position = Vector3.Lerp(
+                m_nameText.transform.position, 
+                Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f)), 
+                5 * Time.deltaTime
+            );
         }
     }
 }
