@@ -11,39 +11,41 @@ namespace Assets.Scripts
     public class WaypointPatrol : MonoBehaviour
     {
         public float turnSpeed = 10f;
-        public NavMeshAgent navMeshAgent;
         public Transform[] waypoints;
         public float detectRange = 2f;
         public GameObject detectIndicatorPref;
 
         bool m_IsFound;
         int m_CurrentWaypointIndex;
+
+        Animator m_Animator;
+        NavMeshAgent m_NavMeshAgent;
         PatrolDetectIndicator m_detectIndicator;
         SingleCoroutineController m_LookAroundCoroutineController;
 
-        Animator m_Animator;
-
         void Start()
         {
+            m_NavMeshAgent = GetComponent<NavMeshAgent>();
             m_Animator = GetComponent<Animator>();
             m_LookAroundCoroutineController = new(this, LookAroundAnimation);
 
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
             m_detectIndicator = DetectIndicatorGO.GetComponent<PatrolDetectIndicator>();
-            navMeshAgent.SetDestination(waypoints[0].position);
+            m_NavMeshAgent.SetDestination(waypoints[0].position);
         }
 
         IEnumerator LookAroundAnimation()
         {
             bool toLeft = false;
             float t = 0;
-            while(true)
+            const float rotateSpeed = 10;
+
+            while (true)
             {
-                if (t >= 1) toLeft = true;
-                float rotateAmount = (toLeft ? -1 : 1);
-                t += Time.deltaTime * rotateAmount;
-                transform.Rotate(new(0, 1), Convert.ToSingle(rotateAmount * Math.PI / 4f));
+                t += (toLeft ? -1 : 1) * Time.deltaTime * rotateSpeed;
+                if (t > 5) toLeft = !toLeft;
+                transform.Rotate(new(0, 1, 0), 30f * (toLeft ? -1 : 1) * Time.deltaTime * rotateSpeed);
                 yield return null;
             }
         }
@@ -56,7 +58,6 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
-                //TODO: find state -> enum �����丵 �ñ� �ڵ� �̳� ���
                 if (!m_IsFound)
                 {
                     StarGroup.Instance.StarPoint++;
@@ -66,9 +67,9 @@ namespace Assets.Scripts
                 if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
                     m_Animator.SetBool("IsFound", true);
                 
-                navMeshAgent.isStopped = false;
+                m_NavMeshAgent.isStopped = false;
                 m_LookAroundCoroutineController.Stop();
-                navMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
+                m_NavMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
             }
             else if (
                 Physics.Raycast(
@@ -85,7 +86,7 @@ namespace Assets.Scripts
             }
             else
             {
-                navMeshAgent.isStopped = m_detectIndicator.warnProgress > 0.5f;
+                m_NavMeshAgent.isStopped = m_detectIndicator.warnProgress > 0.5f;
 
                 if (m_delay > 0)
                 {
@@ -95,10 +96,10 @@ namespace Assets.Scripts
                 m_detectIndicator.isDetecting = false;
                 m_LookAroundCoroutineController.Stop();
 
-                if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
+                if (m_NavMeshAgent.remainingDistance < m_NavMeshAgent.stoppingDistance)
                 {
                     m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
-                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                    m_NavMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
                 }
             }
         }
