@@ -14,13 +14,7 @@ namespace Assets.Scripts
         public float displayImageDuration = 1f;
         public CanvasGroup exitBackgroundImageCanvasGroup, caughtBackgroundImageCanvasGroup;
         public AudioSource exitAudio, caughtAudio;
-
-        SingleCoroutineController m_EndLevelCoroutineController;
-
-        private void Start()
-        {
-            m_EndLevelCoroutineController = new(this);
-        }
+        readonly SingleCoroutineController m_EndLevelCoroutineController = new();
 
         void OnTriggerEnter(Collider other)
         {

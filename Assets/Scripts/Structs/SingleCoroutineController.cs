@@ -12,15 +12,10 @@ namespace Assets.Scripts.Structs
     {
         Coroutine m_CurrentCoroutine;
         readonly Func<IEnumerator>? m_CoroutineInvoker;
-        readonly MonoBehaviour m_MB;
 
-        public SingleCoroutineController(MonoBehaviour MB)
+        public SingleCoroutineController() {}
+        public SingleCoroutineController(Func<IEnumerator> coroutineInvoker)
         {
-            m_MB = MB;
-        }
-        public SingleCoroutineController(MonoBehaviour MB, Func<IEnumerator> coroutineInvoker)
-        {
-            m_MB = MB;
             m_CoroutineInvoker = coroutineInvoker;
         }
 
@@ -34,13 +29,13 @@ namespace Assets.Scripts.Structs
         public void Start(Func<IEnumerator> coroutineInvoker, bool restartOnDuplicated = false)
         {
             if (restartOnDuplicated) Stop();
-            m_CurrentCoroutine ??= m_MB.StartCoroutine(coroutineInvoker());
+            m_CurrentCoroutine ??= CoroutineInvoker.Instance.StartCoroutine(coroutineInvoker());
         }
         public void Stop()
         {
             if (m_CurrentCoroutine != null)
             {
-                m_MB.StopCoroutine(m_CurrentCoroutine);
+                CoroutineInvoker.Instance.StopCoroutine(m_CurrentCoroutine);
                 m_CurrentCoroutine = null;
             }
         }

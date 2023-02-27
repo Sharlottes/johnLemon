@@ -27,7 +27,7 @@ namespace Assets.Scripts
         {
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
             m_Animator = GetComponent<Animator>();
-            m_LookAroundCoroutineController = new(this, LookAroundAnimation);
+            m_LookAroundCoroutineController = new(LookAroundAnimation);
 
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
