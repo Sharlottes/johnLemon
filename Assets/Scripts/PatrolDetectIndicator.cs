@@ -4,46 +4,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PatrolDetectIndicator : MonoBehaviour
+namespace Assets.Scripts
 {
-    public Sprite defaultIcon, warnIcon, findIcon;
-    public Image warnBar, findBar, icon;
-    public bool isDetecting = false;
-    public bool IsFound => findProgress >= 1 && icon.sprite == findIcon;
-    public float detectSpeed = 2f;
-
-    public float warnProgress, findProgress;
-
-    void Update()
+    public enum FindLevel
     {
-        if(isDetecting)
-        {
-            if (warnProgress < 1)
-            {
-                warnProgress += Time.deltaTime * detectSpeed;
-            }
-            else if (findProgress < 1)
-            {
-                findProgress += Time.deltaTime * detectSpeed;
-            }
-        }
-        else
-        {
-            if (findProgress > 0)
-            {
-                findProgress -= Time.deltaTime * detectSpeed;
-            }
-            else if (warnProgress > 0)
-            {
-                warnProgress -= Time.deltaTime * detectSpeed;
-            }
-        }
+        Idle,
+        Warn,
+        Find
+    }
 
-        if (findProgress >= 1) icon.sprite = findIcon;
-        else if (warnProgress > 0) icon.sprite = warnIcon;
-        else icon.sprite = defaultIcon;
+    public class PatrolDetectIndicator : MonoBehaviour
+    {
+        [SerializeField] Sprite defaultIcon, warnIcon, findIcon;
+        [SerializeField] Image warnBar, findBar, icon;
+        [SerializeField] float m_DetectSpeed = 2;
+        [SerializeField] float m_Progress;
 
-        warnBar.fillAmount = warnProgress;
-        findBar.fillAmount = findProgress;
+        public bool isDetecting = false;
+        public FindLevel indicateLevel = FindLevel.Idle;
+
+        void Update()
+        {
+            float speedDelta = Time.deltaTime * m_DetectSpeed;
+            m_Progress = Math.Clamp(m_Progress + speedDelta * (isDetecting ? 1 : -1), 0, 2);
+
+            indicateLevel = m_Progress >= 2 ? FindLevel.Find : m_Progress >= 0.5f ? FindLevel.Warn : FindLevel.Idle;
+
+            icon.sprite = indicateLevel switch
+            {
+                FindLevel.Idle => defaultIcon,
+                FindLevel.Warn => warnIcon,
+                FindLevel.Find => findIcon,
+                _ => throw new Exception("wrong enum value!"),
+            };
+            warnBar.fillAmount = m_Progress;
+            findBar.fillAmount = m_Progress - 1;
+        }
     }
 }

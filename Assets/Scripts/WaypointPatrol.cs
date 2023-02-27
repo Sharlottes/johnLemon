@@ -55,9 +55,15 @@ namespace Assets.Scripts
         {
             m_detectIndicator.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f));
 
-            Vector3 targetDirection = Player.Instance.transform.position - transform.position;
-            if (m_detectIndicator.IsFound)
+            if (m_detectIndicator.indicateLevel == FindLevel.Find)
             {
+                m_NavMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
+            }
+
+            Vector3 targetDirection = Player.Instance.transform.position - transform.position;
+            if (m_detectIndicator.indicateLevel == FindLevel.Find)
+            {
+
                 if (!m_IsFound)
                 {
                     StarGroup.Instance.StarPoint++;
@@ -69,7 +75,6 @@ namespace Assets.Scripts
                 
                 m_NavMeshAgent.isStopped = false;
                 m_LookAroundCoroutineController.Stop();
-                m_NavMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
             }
             else if (
                 Physics.Raycast(
@@ -86,7 +91,7 @@ namespace Assets.Scripts
             }
             else
             {
-                m_NavMeshAgent.isStopped = m_detectIndicator.warnProgress > 0.5f;
+                m_NavMeshAgent.isStopped = m_detectIndicator.indicateLevel == FindLevel.Warn;
 
                 if (m_delay > 0)
                 {
@@ -96,11 +101,16 @@ namespace Assets.Scripts
                 m_detectIndicator.isDetecting = false;
                 m_LookAroundCoroutineController.Stop();
 
-                if (m_NavMeshAgent.remainingDistance < m_NavMeshAgent.stoppingDistance)
-                {
-                    m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
-                    m_NavMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
-                }
+                PatrolUpdate();
+            }
+        }
+
+        void PatrolUpdate()
+        {
+            if (m_NavMeshAgent.remainingDistance < m_NavMeshAgent.stoppingDistance)
+            {
+                m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
+                m_NavMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
             }
         }
     }
