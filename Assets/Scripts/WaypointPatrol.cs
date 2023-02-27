@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
+using Assets.Scripts.Structs;
 
 namespace Assets.Scripts
 {
@@ -15,12 +16,18 @@ namespace Assets.Scripts
         public float detectRange = 2f;
         public GameObject detectIndicatorPref;
 
+        bool m_IsFound;
         int m_CurrentWaypointIndex;
         PatrolDetectIndicator m_detectIndicator;
-        Coroutine m_AnimationCoroutine;
+        SingleCoroutineController m_LookAroundCoroutineController;
+
+        Animator m_Animator;
 
         void Start()
         {
+            m_Animator = GetComponent<Animator>();
+            m_LookAroundCoroutineController = new(this, LookAroundAnimation);
+
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
             m_detectIndicator = DetectIndicatorGO.GetComponent<PatrolDetectIndicator>();
@@ -36,7 +43,7 @@ namespace Assets.Scripts
                 if (t >= 1) toLeft = true;
                 float rotateAmount = (toLeft ? -1 : 1);
                 t += Time.deltaTime * rotateAmount;
-                transform.Rotate(new(0, 1), rotateAmount / 6);
+                transform.Rotate(new(0, 1), Convert.ToSingle(rotateAmount * Math.PI / 4f));
                 yield return null;
             }
         }
@@ -49,12 +56,18 @@ namespace Assets.Scripts
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.IsFound)
             {
-                navMeshAgent.isStopped = false;
-                if (m_AnimationCoroutine != null)
+                //TODO: find state -> enum �����丵 �ñ� �ڵ� �̳� ���
+                if (!m_IsFound)
                 {
-                    StopCoroutine(m_AnimationCoroutine);
-                    m_AnimationCoroutine = null;
+                    StarGroup.Instance.StarPoint++;
+                    m_IsFound = true;
                 }
+
+                if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
+                    m_Animator.SetBool("IsFound", true);
+                
+                navMeshAgent.isStopped = false;
+                m_LookAroundCoroutineController.Stop();
                 navMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
             }
             else if (
@@ -66,12 +79,9 @@ namespace Assets.Scripts
                 raycastHit.collider.transform == Player.Instance.transform
             )
             {
-                float distance = Vector3.Distance(Player.Instance.transform.position, transform.position);
-                Debug.Log(distance);
-
-                    m_detectIndicator.isDetecting = true;
-                    m_delay = 0.1f;
-                    m_AnimationCoroutine ??= StartCoroutine(LookAroundAnimation());
+                m_detectIndicator.isDetecting = true;
+                m_LookAroundCoroutineController.Start();
+                m_delay = 0.1f;
             }
             else
             {
@@ -83,12 +93,8 @@ namespace Assets.Scripts
                     return;
                 }
                 m_detectIndicator.isDetecting = false;
+                m_LookAroundCoroutineController.Stop();
 
-                if (m_AnimationCoroutine != null)
-                {
-                    StopCoroutine(m_AnimationCoroutine);
-                    m_AnimationCoroutine = null;
-                }
                 if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
                 {
                     m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
