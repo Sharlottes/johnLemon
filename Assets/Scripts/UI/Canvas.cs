@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Structs.Singleton;
 
-public class Canvas : SingletonMonoBehaviour<Canvas>
+public class Canvas : LazySingletonMonoBehaviour<Canvas>
 {
 }

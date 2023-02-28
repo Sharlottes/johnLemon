@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using Assets.Scripts.Structs;
+using Assets.Scripts.UI.Scenes.GameScene;
 
 namespace Assets.Scripts
 {

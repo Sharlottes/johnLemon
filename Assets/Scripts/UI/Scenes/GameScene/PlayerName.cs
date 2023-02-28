@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.UI.Scenes.GameScene
 {
     public class PlayerName : MonoBehaviour
     {
