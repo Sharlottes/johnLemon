@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Structs
 {
     internal class SingleCoroutineController
     {
         Coroutine m_CurrentCoroutine;
-        readonly Func<IEnumerator>? m_CoroutineInvoker;
 
-        public SingleCoroutineController() {}
+        readonly Func<IEnumerator> m_CoroutineInvoker;
+
+        public SingleCoroutineController(): this(Global.DummyCoroutine) {}
         public SingleCoroutineController(Func<IEnumerator> coroutineInvoker)
         {
             m_CoroutineInvoker = coroutineInvoker;
