@@ -53,7 +53,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void RestartGame() => SceneManager.LoadScene(0);
+        public void RestartGame() => SceneManager.LoadScene("GameScene");
         public void EndGame() => Application.Quit();
         public void SaveData() => PlayerPrefs.Save();
     }
