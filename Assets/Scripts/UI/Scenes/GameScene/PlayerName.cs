@@ -21,7 +21,7 @@ namespace Assets.Scripts.UI.Scenes.GameScene
             m_nameText.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f));
         }
 
-        private void Update()
+        void Update()
         {
             m_nameText.transform.position = Vector3.Lerp(
                 m_nameText.transform.position, 

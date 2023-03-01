@@ -680,10 +680,11 @@ GameObject:
   - component: {fileID: 3190072270416809098}
   - component: {fileID: 6230783010131684730}
   - component: {fileID: 97348344031147911}
-  - component: {fileID: 5766341293079300731}
   - component: {fileID: 4444301752891919998}
   - component: {fileID: 998396957711115193}
+  - component: {fileID: 5766341293079300731}
   - component: {fileID: 416268913109267447}
+  - component: {fileID: 3629508834194845017}
   m_Layer: 0
   m_Name: JohnLemon
   m_TagString: Untagged
@@ -758,19 +759,6 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &5766341293079300731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3190072270426341186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3fd620fc0ed40a4288649785b28cfd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 20
 --- !u!82 &4444301752891919998
 AudioSource:
   m_ObjectHideFlags: 0
@@ -875,6 +863,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3190072270426341186}
   m_Enabled: 1
+--- !u!114 &5766341293079300731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3190072270426341186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fd620fc0ed40a4288649785b28cfd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSpeed: 20
+  moveSpeed: 1
 --- !u!114 &416268913109267447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,6 +892,24 @@ MonoBehaviour:
   playerName: 
   nameTextPref: {fileID: 3560771332607837962, guid: 6f7d69909c0853747b6a52b9b190e3b2,
     type: 3}
+--- !u!114 &3629508834194845017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3190072270426341186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b91fb33946dc1c4c9d90b3251bd67d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaBarPref: {fileID: 3206817305926645848, guid: 12f0eaca85182d24db1f516bc46e139b,
+    type: 3}
+  maxStamina: 5
+  currentStamina: 5
+  from: {r: 1, g: 1, b: 1, a: 1}
+  to: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &3190072270426341188
 GameObject:
   m_ObjectHideFlags: 0
