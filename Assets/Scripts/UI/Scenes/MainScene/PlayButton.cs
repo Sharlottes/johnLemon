@@ -8,13 +8,22 @@ namespace Assets.Scripts.UI.Scenes.MainScene
 {
     public class PlayButton : MonoBehaviour
     {
+        int id;
+
         private void Start()
         {
             KeyBindManager.Instance
                 .Bind<OrBind>(new BindOptions(){ once = true }, KeyCode.Return, KeyCode.Space)
-                    .Then(OnClick);
+                    .Then(OnClick)
+                    .GetID(out id);
         }
-        public void OnClick() => ScreenTransitionController.Instance.ChangeScene<ScreenFadeInTransition, ScreenFadeOutTransition>("GameScene", 0.5f, 1);
 
+        private void OnDestroy() {
+            KeyBindManager.Instance.UnBind(id);
+        }
+
+        public void OnClick() => ScreenTransitionController.Instance.ChangeScene
+            <ScreenFadeInTransition, ScreenFadeOutTransition>
+            ("GameScene", 0.5f, 1);
     }
 }
