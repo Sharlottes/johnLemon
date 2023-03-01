@@ -16,7 +16,6 @@ namespace Assets.Scripts.Transitions
         private void Start()
         {
             canvas = GetComponentInChildren<UnityEngine.Canvas>();
-            Debug.Log(canvas);
             foreach (GameObject prefab in transitionPrefabList)
             {
                 m_TransitionPrefabs.Add(prefab.name, prefab);
