@@ -22,19 +22,18 @@ namespace Assets.Scripts.Utils.Keybind
             return true;
         })
         { }
-        public AndBind(params Conditional[] binds) : base((out KeyCode[] res) =>
+        public AndBind(params KeyBind[] binds) : base((out KeyCode[] res) =>
         {
             List<KeyCode> list = new();
-            foreach (Conditional cond in binds)
+            foreach (KeyBind keybind in binds)
             {
-                if (!cond.condition())
-                {
+                if (keybind.condition(out KeyCode[] bindKeys))
+                { 
+                    list.AddRange(keybind.GetKeys()); 
+                } 
+                else {
                     res = null;
                     return false;
-                }
-                else if (cond is KeyBind keybind)
-                {
-                    list.Concat(keybind.GetKeys());
                 }
             }
             res = list.ToArray();

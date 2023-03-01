@@ -9,35 +9,32 @@ namespace Assets.Scripts.Utils.Keybind
     {
         public OrBind(params KeyCode[] keys) : base(keys, (out KeyCode[] res) =>
         {
+            List<KeyCode> list = new();
             foreach (KeyCode code in keys)
             {
-                if (Input.GetKey(code))
-                {
-                    res = new[] { code };
-                    return true;
-                }
+                if (Input.GetKey(code)) list.Add(code);
             }
-            res = null;
-            return false;
+            res = list.ToArray();
+            return list.Any();
         })
         { }
-        public OrBind(params Conditional[] binds) : base((out KeyCode[] res) =>
+        public OrBind(params KeyBind[] binds) : base((out KeyCode[] res) =>
         {
             List<KeyCode> list = new();
-            foreach (Conditional cond in binds)
+            string str = "";
+            foreach (KeyCode code in list)
             {
-                if (cond.condition())
+                str += $"{code} ,";
+            }
+            foreach (KeyBind keybind in binds)
+            {
+                if (keybind.condition(out KeyCode[] bindKeys))
                 {
-                    res = cond is KeyBind kb ? kb.GetKeys() : null;
-                    return true;
-                }
-                else if (cond is KeyBind keybind)
-                {
-                    list.Concat(keybind.GetKeys());
+                    list.AddRange(bindKeys);
                 }
             }
-            res = null;
-            return false;
+            res = list.ToArray();
+            return list.Any();
         })
         { }
     }
