@@ -19,11 +19,15 @@ namespace Assets.Scripts
         Quaternion m_Rotation = Quaternion.identity;
         AudioSource m_AudioSource;
 
+        int[] keybindIds = new int[4];
+
         private void Awake()
         {
+            m_Animator = GetComponent<Animator>();
+            m_Rigidbody = GetComponent<Rigidbody>();
+            m_AudioSource = GetComponent<AudioSource>();
             KeyBindManager.Instance
-                .Bind()
-                    .Or<OrBind>(KeyCodeUtils.Horizontal)
+                .Bind<OrBind>(KeyCodeUtils.Horizontal)
                     .Or<OrBind>(KeyCodeUtils.Vertical)
                     .Then((KeyCode[] codes, BindObject bind) =>
                     {
@@ -56,32 +60,36 @@ namespace Assets.Scripts
                         m_Animator.SetBool("IsWalking", false);
                         m_AudioSource.Stop();
                     })
-                .Bind()
-                    .Is(KeyCode.E)
+                    .GetID(out keybindIds[0])
+                .Bind(KeyCode.E)
                     .Then(() =>
                     {
                         //TODO: 아이템 사용
                     })
-                .Bind()
-                    .Or(KeyCode.LeftShift, KeyCode.RightShift)
+                    .GetID(out keybindIds[1])
+                .Bind(KeyCode.LeftShift, KeyCode.RightShift)
                     .Then(() =>
                     {
                         //TODO: Run();
                     })
-                .Bind()
-                    .Or(KeyCode.LeftControl, KeyCode.RightControl)
+                    .GetID(out keybindIds[2])
+                .Bind(KeyCode.LeftControl, KeyCode.RightControl)
                     .Then(() =>
                     {
                         //TODO: Slow();
-                    });
+                    })
+                    .GetID(out keybindIds[3]);
         }
 
-        void Start()
+        private void OnDestroy()
         {
-            m_Animator = GetComponent<Animator>();
-            m_Rigidbody = GetComponent<Rigidbody>();
-            m_AudioSource = GetComponent<AudioSource>();
+            foreach(int id in keybindIds)
+            {
+
+                KeyBindManager.Instance.UnBind(id);
+            }
         }
+
 
         void OnAnimatorMove()
         {

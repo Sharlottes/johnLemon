@@ -21,11 +21,6 @@ namespace Assets.Scripts.Utils.Keybind
         public OrBind(params KeyBind[] binds) : base((out KeyCode[] res) =>
         {
             List<KeyCode> list = new();
-            string str = "";
-            foreach (KeyCode code in list)
-            {
-                str += $"{code} ,";
-            }
             foreach (KeyBind keybind in binds)
             {
                 if (keybind.isKeyPressed(out KeyCode[] bindKeys))

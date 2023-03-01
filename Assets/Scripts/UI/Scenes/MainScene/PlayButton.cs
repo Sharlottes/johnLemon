@@ -11,8 +11,7 @@ namespace Assets.Scripts.UI.Scenes.MainScene
         private void Start()
         {
             KeyBindManager.Instance
-                .Bind(new() { once = true })
-                    .Is<OrBind>(KeyCode.Return, KeyCode.Space)
+                .Bind<OrBind>(new BindOptions(){ once = true }, KeyCode.Return, KeyCode.Space)
                     .Then(OnClick);
         }
         public void OnClick() => ScreenTransitionController.Instance.ChangeScene<ScreenFadeInTransition, ScreenFadeOutTransition>("GameScene", 0.5f, 1);
