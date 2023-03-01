@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Transitions
+namespace Assets.Scripts.Utils.Transitions
 {
     public class ScreenFadeOutTransition : ScreenTransition
     {

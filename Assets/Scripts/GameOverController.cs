@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Structs.Singleton;
-using UnityEngine.SceneManagement;
-using Assets.Scripts.Transitions;
-using Assets.Scripts.Utils;
-using UnityEngine.Analytics;
+using Assets.Scripts.Utils.Transitions;
 
 namespace Assets.Scripts
 {

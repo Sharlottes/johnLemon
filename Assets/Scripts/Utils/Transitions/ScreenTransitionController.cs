@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Transitions
+namespace Assets.Scripts.Utils.Transitions
 {
     public class ScreenTransitionController : DDOLSingletonMonoBehaviour<ScreenTransitionController>
     {

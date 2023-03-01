@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.Transitions
+namespace Assets.Scripts.Utils.Transitions
 {
     public abstract class ScreenTransition : MonoBehaviour
     {

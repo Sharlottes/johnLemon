@@ -1,4 +1,4 @@
-using Assets.Scripts.Transitions;
+using Assets.Scripts.Utils.Transitions;
 using Assets.Scripts.Utils.Keybind;
 using System.Collections;
 using System.Collections.Generic;
