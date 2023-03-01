@@ -39,17 +39,24 @@ namespace Assets.Scripts.Utils.Keybind
             lastBind = null;
         }
 
-        public KeyBindManager And(params KeyCode[] keyCodes)
+        public KeyBindManager And(params KeyCode[] keyCodes) => And(BindType.None, keyCodes);
+        public KeyBindManager And(BindType type, params KeyCode[] keyCodes)
         {
             if (lastBind.HasCallback) UpdateLastBind();
 
             if (lastBind == null) lastBind = new(new AndBind(keyCodes));
-            else lastBind.bind = new AndBind(lastBind.bind, new AndBind(keyCodes));
+            else lastBind.bind = type switch
+            {
+                BindType.And => new AndBind(lastBind.bind, new AndBind(keyCodes)),
+                BindType.Or => new OrBind(lastBind.bind, new AndBind(keyCodes)),
+                _ => throw new NotImplementedException()
+            };
 
             return this;
         }
 
-        public KeyBindManager Or(params KeyCode[] keyCodes)
+        public KeyBindManager Or(params KeyCode[] keyCodes) => Or(BindType.None, keyCodes);
+        public KeyBindManager Or(BindType type, params KeyCode[] keyCodes)
         {
             if (lastBind.HasCallback) UpdateLastBind();
 
