@@ -17,7 +17,6 @@ namespace Assets.Scripts.Utils.Keybind
             {
                 RunBind(bind);
             }
-            RunBind(lastBind);
         }
 
         void RunBind(BindObject bind)
@@ -25,12 +24,6 @@ namespace Assets.Scripts.Utils.Keybind
             if (bind.bind.isKeyPressed(out KeyCode[] keyCodes)) 
                 bind.callback(keyCodes, bind);
             else bind.elseCallback();
-        }
-
-        void UpdateLastBind()
-        {
-            binds.Add(lastBind);
-            lastBind = null;
         }
 
         T CreateKeyBind<T>(params KeyCode[] keyCodes) where T : KeyBind
@@ -44,46 +37,36 @@ namespace Assets.Scripts.Utils.Keybind
             } as T;
         }
 
-        public KeyBindManager Bind()
+        public KeyBindManager Bind() => Bind(new() { name = "", once = false });
+        public KeyBindManager Bind(BindOptions options)
         {
-            if (lastBind != null) UpdateLastBind();
+            binds.Add(lastBind = new BindObject(options));
+
             return this;
         }
 
 
         public KeyBindManager Is(params KeyCode[] keyCodes) => Is<KeyBind>(keyCodes);
-        public KeyBindManager Is<T>(params KeyCode[] keyCodes) where T : KeyBind => Is<T>("", keyCodes);
-        public KeyBindManager Is(string name, params KeyCode[] keyCodes) => Is<KeyBind>(name, keyCodes);
-        public KeyBindManager Is<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager Is<T>(params KeyCode[] keyCodes) where T : KeyBind
         {
-            T bind = CreateKeyBind<T>(keyCodes);
-            if (lastBind == null) lastBind = new(bind, name);
-            else lastBind.bind = bind;
+            lastBind.bind = CreateKeyBind<T>(keyCodes);
 
             return this;
         }
 
 
         public KeyBindManager And(params KeyCode[] keyCodes) => And<KeyBind>(keyCodes);
-        public KeyBindManager And<T>(params KeyCode[] keyCodes) where T : KeyBind => And<T>("", keyCodes);
-        public KeyBindManager And(string name, params KeyCode[] keyCodes) => And<KeyBind>(name, keyCodes);
-        public KeyBindManager And<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager And<T>(params KeyCode[] keyCodes) where T : KeyBind
         {
-            T bind = CreateKeyBind<T>(keyCodes);
-            if (lastBind == null) lastBind = new(bind, name);
-            else lastBind.bind = new AndBind(lastBind.bind, bind);
+            lastBind.bind = new AndBind(lastBind.bind, CreateKeyBind<T>(keyCodes));
 
             return this;
         }
 
         public KeyBindManager Or(params KeyCode[] keyCodes) => Or<KeyBind>(keyCodes);
-        public KeyBindManager Or<T>(params KeyCode[] keyCodes) where T : KeyBind => Or<T>("", keyCodes);
-        public KeyBindManager Or(string name, params KeyCode[] keyCodes) => Or<KeyBind>(name, keyCodes);
-        public KeyBindManager Or<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager Or<T>(params KeyCode[] keyCodes) where T : KeyBind
         {
-            T bind = CreateKeyBind<T>(keyCodes);
-            if (lastBind == null) lastBind = new(bind, name);
-            else lastBind.bind = new OrBind(lastBind.bind, bind);
+            lastBind.bind = new OrBind(lastBind.bind, CreateKeyBind<T>(keyCodes));
 
             return this;
         }
