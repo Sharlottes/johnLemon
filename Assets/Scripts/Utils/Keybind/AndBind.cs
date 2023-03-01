@@ -1,7 +1,5 @@
-﻿using Assets.Scripts.Structs;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Utils.Keybind
@@ -27,9 +25,9 @@ namespace Assets.Scripts.Utils.Keybind
             List<KeyCode> list = new();
             foreach (KeyBind keybind in binds)
             {
-                if (keybind.condition(out KeyCode[] bindKeys))
+                if (keybind.isKeyPressed(out KeyCode[] bindKeys))
                 { 
-                    list.AddRange(keybind.GetKeys()); 
+                    list.AddRange(keybind.keys); 
                 } 
                 else {
                     res = null;

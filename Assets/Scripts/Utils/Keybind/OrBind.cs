@@ -28,7 +28,7 @@ namespace Assets.Scripts.Utils.Keybind
             }
             foreach (KeyBind keybind in binds)
             {
-                if (keybind.condition(out KeyCode[] bindKeys))
+                if (keybind.isKeyPressed(out KeyCode[] bindKeys))
                 {
                     list.AddRange(bindKeys);
                 }

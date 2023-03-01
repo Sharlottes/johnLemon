@@ -1,23 +1,24 @@
-﻿using Assets.Scripts.Structs;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Utils.Keybind
 {
-    public class KeyBind : Conditional<KeyCode[]>, IKeyBind
+    public delegate bool IsKeyPressedDelegate(out KeyCode[] res);
+    public class KeyBind
     {
-        public KeyBind(Condit<KeyCode[]> condition) : base(condition) { }
-        public KeyBind(KeyCode keys) : base((out KeyCode[] res) => {
-            res = new[] { keys };
-            return Input.GetKey(keys);
-        })
+        public IsKeyPressedDelegate isKeyPressed;
+        public readonly KeyCode[] keys;
+
+        public KeyBind(IsKeyPressedDelegate isKeyPressed) : this(null, isKeyPressed) { }
+
+        public KeyBind(KeyCode key): this(new[] { key }, (out KeyCode[] res) => {
+            res = new[] { key };
+            return Input.GetKey(key);
+        }) { }
+
+        public KeyBind(KeyCode[] keys, IsKeyPressedDelegate isKeyPressed)
         {
-            this.keys = new[] { keys };
-        }
-        public KeyBind(KeyCode[] keys, Condit<KeyCode[]> condition) : base(condition)
-        {
+            this.isKeyPressed = isKeyPressed;
             this.keys = keys;
         }
-        public KeyCode[] keys;
-        public KeyCode[] GetKeys() => keys;
     }
 }

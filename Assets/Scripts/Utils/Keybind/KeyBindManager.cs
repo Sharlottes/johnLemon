@@ -6,6 +6,11 @@ using Assets.Scripts.Structs.Singleton;
 
 namespace Assets.Scripts.Utils.Keybind
 {
+    public enum BindType
+    {
+        AND, OR, NONE
+    }
+
     public class KeyBindManager : LazyDDOLSingletonMonoBehaviour<KeyBindManager>
     {
         BindObject lastBind;
@@ -22,9 +27,9 @@ namespace Assets.Scripts.Utils.Keybind
 
         void RunBind(BindObject bind)
         {
-            if (bind.bind.condition(out KeyCode[] keyCodes)) 
-                bind.callback?.Invoke(keyCodes, bind);
-            else bind.elseCallback?.Invoke();
+            if (bind.bind.isKeyPressed(out KeyCode[] keyCodes)) 
+                bind.callback(keyCodes, bind);
+            else bind.elseCallback();
         }
 
         void UpdateLastBind()
@@ -38,6 +43,7 @@ namespace Assets.Scripts.Utils.Keybind
             if (lastBind != null) UpdateLastBind();
             return this;
         }
+
         public KeyBindManager Is(KeyCode keyCode) => Is("", keyCode);
         public KeyBindManager Is(string name, KeyCode keyCode) => Is(BindType.NONE, name, keyCode);
         public KeyBindManager Is(BindType type, KeyCode keyCode) => Is(type, "", keyCode);
