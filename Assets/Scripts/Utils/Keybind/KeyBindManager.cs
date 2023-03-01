@@ -6,11 +6,6 @@ using Assets.Scripts.Structs.Singleton;
 
 namespace Assets.Scripts.Utils.Keybind
 {
-    public enum BindType
-    {
-        AND, OR, NONE
-    }
-
     public class KeyBindManager : LazyDDOLSingletonMonoBehaviour<KeyBindManager>
     {
         BindObject lastBind;
@@ -38,56 +33,57 @@ namespace Assets.Scripts.Utils.Keybind
             lastBind = null;
         }
 
+        T CreateKeyBind<T>(params KeyCode[] keyCodes) where T : KeyBind
+        {
+           return typeof(T).Name switch
+            {
+                "AndBind" => new AndBind(keyCodes),
+                "OrBind" =>  new OrBind(keyCodes),
+                "KeyBind" => new KeyBind(keyCodes[0]),
+                _ => throw new NotImplementedException()
+            } as T;
+        }
+
         public KeyBindManager Bind()
         {
             if (lastBind != null) UpdateLastBind();
             return this;
         }
 
-        public KeyBindManager Is(KeyCode keyCode) => Is("", keyCode);
-        public KeyBindManager Is(string name, KeyCode keyCode) => Is(BindType.NONE, name, keyCode);
-        public KeyBindManager Is(BindType type, KeyCode keyCode) => Is(type, "", keyCode);
-        public KeyBindManager Is(BindType type, string name, KeyCode keyCode)
+
+        public KeyBindManager Is(params KeyCode[] keyCodes) => Is<KeyBind>(keyCodes);
+        public KeyBindManager Is<T>(params KeyCode[] keyCodes) where T : KeyBind => Is<T>("", keyCodes);
+        public KeyBindManager Is(string name, params KeyCode[] keyCodes) => Is<KeyBind>(name, keyCodes);
+        public KeyBindManager Is<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
         {
-            if (lastBind == null) lastBind = new(new KeyBind(keyCode), name);
-            else lastBind.bind = type switch
-            {
-                BindType.AND => new AndBind(lastBind.bind, new KeyBind(keyCode)),
-                BindType.OR => new OrBind(lastBind.bind, new KeyBind(keyCode)),
-                _ => throw new NotImplementedException()
-            };
+            T bind = CreateKeyBind<T>(keyCodes);
+            if (lastBind == null) lastBind = new(bind, name);
+            else lastBind.bind = bind;
 
             return this;
         }
 
-        public KeyBindManager And(params KeyCode[] keyCodes) => And("", keyCodes);
-        public KeyBindManager And(string name, params KeyCode[] keyCodes) => And(BindType.NONE, name, keyCodes);
-        public KeyBindManager And(BindType type, params KeyCode[] keyCodes) => And(type, "", keyCodes);
-        public KeyBindManager And(BindType type, string name, params KeyCode[] keyCodes)
+
+        public KeyBindManager And(params KeyCode[] keyCodes) => And<KeyBind>(keyCodes);
+        public KeyBindManager And<T>(params KeyCode[] keyCodes) where T : KeyBind => And<T>("", keyCodes);
+        public KeyBindManager And(string name, params KeyCode[] keyCodes) => And<KeyBind>(name, keyCodes);
+        public KeyBindManager And<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
         {
-            if (lastBind == null) lastBind = new(new AndBind(keyCodes), name);
-            else lastBind.bind = type switch
-            {
-                BindType.AND => new AndBind(lastBind.bind, new AndBind(keyCodes)),
-                BindType.OR => new OrBind(lastBind.bind, new AndBind(keyCodes)),
-                _ => throw new NotImplementedException()
-            };
+            T bind = CreateKeyBind<T>(keyCodes);
+            if (lastBind == null) lastBind = new(bind, name);
+            else lastBind.bind = new AndBind(lastBind.bind, bind);
 
             return this;
         }
 
-        public KeyBindManager Or(params KeyCode[] keyCodes) => Or("", keyCodes);
-        public KeyBindManager Or(string name, params KeyCode[] keyCodes) => Or(BindType.NONE, name, keyCodes);
-        public KeyBindManager Or(BindType type, params KeyCode[] keyCodes) => Or(type, "", keyCodes);
-        public KeyBindManager Or(BindType type, string name = "", params KeyCode[] keyCodes)
+        public KeyBindManager Or(params KeyCode[] keyCodes) => Or<KeyBind>(keyCodes);
+        public KeyBindManager Or<T>(params KeyCode[] keyCodes) where T : KeyBind => Or<T>("", keyCodes);
+        public KeyBindManager Or(string name, params KeyCode[] keyCodes) => Or<KeyBind>(name, keyCodes);
+        public KeyBindManager Or<T>(string name, params KeyCode[] keyCodes) where T : KeyBind
         {
-            if (lastBind == null) lastBind = new(new OrBind(keyCodes), name);
-            else lastBind.bind = type switch
-            {
-                BindType.AND => new AndBind(lastBind.bind, new OrBind(keyCodes)),
-                BindType.OR => new OrBind(lastBind.bind, new OrBind(keyCodes)),
-                _ => throw new NotImplementedException()
-            };
+            T bind = CreateKeyBind<T>(keyCodes);
+            if (lastBind == null) lastBind = new(bind, name);
+            else lastBind.bind = new OrBind(lastBind.bind, bind);
 
             return this;
         }

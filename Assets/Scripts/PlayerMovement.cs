@@ -23,8 +23,8 @@ namespace Assets.Scripts
         {
             KeyBindManager.Instance
                 .Bind()
-                    .Or(KeyCodeUtils.Horizontal)
-                    .Or(BindType.OR, KeyCodeUtils.Vertical)
+                    .Or<OrBind>(KeyCodeUtils.Horizontal)
+                    .Or<OrBind>(KeyCodeUtils.Vertical)
                     .Then((KeyCode[] codes, BindObject bind) =>
                     {
                         Vector2 xz = new();
