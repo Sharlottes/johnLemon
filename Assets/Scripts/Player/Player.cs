@@ -9,8 +9,9 @@ namespace Assets.Scripts
     public class Player : SingletonMonoBehaviour<Player>
     {
         int itemUseKeyBindId;
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             KeyBindManager.Instance
 
                 .Bind(KeyCode.E)
