@@ -22,12 +22,12 @@ namespace Assets.Scripts.Utils.Transitions
             }
         }
 
-        public IEnumerator StartTransition<T>(float duration) where T : ScreenTransition => StartTransition<T>(duration, null);
-        public IEnumerator StartTransition<T>(float duration, Func<YieldInstruction>? callbackBeforeDestroy) where T : ScreenTransition
+        public IEnumerator StartTransition<T>(float duration) where T : ScreenTransition => StartTransition<T>(duration, Global.DummyYieldInstruction);
+        public IEnumerator StartTransition<T>(float duration, Func<YieldInstruction> callbackBeforeDestroy) where T : ScreenTransition
         {
             T transition = Instantiate(m_TransitionPrefabs[typeof(T).Name], canvas.transform).GetComponent<T>();
             yield return transition.Run(duration);
-            if(callbackBeforeDestroy != null) yield return callbackBeforeDestroy();
+            yield return callbackBeforeDestroy();
             Destroy(transition.gameObject);
         }
 
