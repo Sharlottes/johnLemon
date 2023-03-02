@@ -13,7 +13,7 @@ namespace Assets.Scripts.UI.Scenes.MainScene
         private void Start()
         {
             KeyBindManager.Instance
-                .Bind<OrBind>(new BindOptions(){ once = true }, KeyCode.Return, KeyCode.Space)
+                .Bind(new BindOptions(){ once = true }, KeyCode.Return, KeyCode.Space)
                     .Then(OnClick)
                     .GetID(out id);
         }

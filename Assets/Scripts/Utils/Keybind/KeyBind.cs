@@ -2,23 +2,24 @@
 
 namespace Assets.Scripts.Utils.Keybind
 {
-    public delegate bool IsKeyPressedDelegate(out KeyCode[] res);
-    public class KeyBind
+    public interface IKeyBind : IBind
     {
-        public IsKeyPressedDelegate isKeyPressed;
-        public readonly KeyCode[] keys;
+        void Init(KeyCode[] codes);
+        KeyCode[] GetKeys();
+    }
 
-        public KeyBind(IsKeyPressedDelegate isKeyPressed) : this(null, isKeyPressed) { }
+    public class KeyBind : Bind, IKeyBind
+    {
+        KeyCode key;
 
-        public KeyBind(KeyCode key): this(new[] { key }, (out KeyCode[] res) => {
+        public virtual void Init(KeyCode[] codes) => key = codes[0];
+
+        public override bool IsKeyPressed(out KeyCode[] res)
+        {
             res = new[] { key };
             return Input.GetKey(key);
-        }) { }
-
-        public KeyBind(KeyCode[] keys, IsKeyPressedDelegate isKeyPressed)
-        {
-            this.isKeyPressed = isKeyPressed;
-            this.keys = keys;
         }
+
+        public virtual KeyCode[] GetKeys() => new[] { key };
     }
 }

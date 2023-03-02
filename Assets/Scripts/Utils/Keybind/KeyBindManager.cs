@@ -24,7 +24,7 @@ namespace Assets.Scripts.Utils.Keybind
 
         void RunBind(BindObject bind)
         {
-            if (bind.bind.isKeyPressed(out KeyCode[] keyCodes))
+            if (bind.bind.IsKeyPressed(out KeyCode[] keyCodes))
             {
                 bind.callback(keyCodes, bind);
                 if(bind.once) binds.Remove(bind);
@@ -32,21 +32,16 @@ namespace Assets.Scripts.Utils.Keybind
             else bind.elseCallback();
         }
 
-        T CreateKeyBind<T>(params KeyCode[] keyCodes) where T : KeyBind
-        {
-           return typeof(T).Name switch
-            {
-                "AndBind" => new AndBind(keyCodes),
-                "OrBind" =>  new OrBind(keyCodes),
-                "KeyBind" => new KeyBind(keyCodes[0]),
-                _ => throw new NotImplementedException()
-            } as T;
+        T CreateKeyBind<T>(params KeyCode[] keyCodes) where T : IKeyBind, new()
+        { 
+            T keyBind = new ();
+            keyBind.Init(keyCodes);
+            return keyBind;
         }
-
-        public KeyBindManager Bind(params KeyCode[] keyCodes) => Bind(BindOptions.defaultObject, keyCodes);
-        public KeyBindManager Bind<T>(params KeyCode[] keyCodes) where T : KeyBind => Bind<T>(BindOptions.defaultObject, keyCodes);
-        public KeyBindManager Bind(BindOptions options, params KeyCode[] keyCodes) => Bind<KeyBind>(options, keyCodes);
-        public KeyBindManager Bind<T>(BindOptions options, params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager Bind(params KeyCode[] keyCodes) => Bind(BindOptions.defaultOption, keyCodes);
+        public KeyBindManager Bind(BindOptions options, params KeyCode[] keyCodes) => Bind<OrKeyBind>(options, keyCodes);
+        public KeyBindManager Bind<T>(params KeyCode[] keyCodes) where T : KeyBind, new() => Bind<T>(BindOptions.defaultOption, keyCodes);
+        public KeyBindManager Bind<T>(BindOptions options, params KeyCode[] keyCodes) where T : KeyBind, new()
         {
             binds.Add(new BindObject(options, CreateKeyBind<T>(keyCodes)));
             return this;
@@ -64,15 +59,15 @@ namespace Assets.Scripts.Utils.Keybind
             return this;
         }
 
-        public KeyBindManager And(params KeyCode[] keyCodes) => And<KeyBind>(keyCodes);
-        public KeyBindManager And<T>(params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager And(params KeyCode[] keyCodes) => And<OrKeyBind>(keyCodes);
+        public KeyBindManager And<T>(params KeyCode[] keyCodes) where T : KeyBind, new()
         {
             LastBind.bind = new AndBind(LastBind.bind, CreateKeyBind<T>(keyCodes));
             return this;
         }
 
-        public KeyBindManager Or(params KeyCode[] keyCodes) => Or<KeyBind>(keyCodes);
-        public KeyBindManager Or<T>(params KeyCode[] keyCodes) where T : KeyBind
+        public KeyBindManager Or(params KeyCode[] keyCodes) => Or<OrKeyBind>(keyCodes);
+        public KeyBindManager Or<T>(params KeyCode[] keyCodes) where T : KeyBind, new()
         {
             LastBind.bind = new OrBind(LastBind.bind, CreateKeyBind<T>(keyCodes));
             return this;

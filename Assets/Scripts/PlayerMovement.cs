@@ -37,8 +37,8 @@ namespace Assets.Scripts
             m_StaminaBar = GetComponent<StaminaBar>();
 
             KeyBindManager.Instance
-                .Bind<OrBind>(KeyCodeUtils.Horizontal)
-                    .Or<OrBind>(KeyCodeUtils.Vertical)
+                .Bind(KeyCodeUtils.Horizontal)
+                    .Or(KeyCodeUtils.Vertical)
                     .Then((KeyCode[] codes) =>
                     {
                         MoveSpeed = 1f;
