@@ -135,7 +135,7 @@ MonoBehaviour:
   warnBar: {fileID: 3077865243214107835}
   findBar: {fileID: 3077865242613418308}
   icon: {fileID: 3077865243355015005}
-  m_DetectSpeed: 2
+  m_DetectSpeed: 1
   m_Progress: 0
   isDetecting: 0
   indicateLevel: 0
