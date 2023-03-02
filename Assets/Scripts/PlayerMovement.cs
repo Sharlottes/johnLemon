@@ -27,7 +27,7 @@ namespace Assets.Scripts
         AudioSource m_AudioSource;
         StaminaBar m_StaminaBar;
 
-        readonly int[] keybindIds = new int[4];
+        readonly int[] keybindIds = new int[3];
 
         private void Awake()
         {
@@ -52,12 +52,6 @@ namespace Assets.Scripts
                         m_AudioSource.Stop();
                     })
                     .GetID(out keybindIds[0])
-                .Bind(KeyCode.E)
-                    .Then(() =>
-                    {
-                        //TODO: 아이템 사용
-                    })
-                    .GetID(out keybindIds[1])
                 .Bind(KeyCode.LeftShift, KeyCode.RightShift)
                     .Then(() =>
                     {
@@ -68,14 +62,14 @@ namespace Assets.Scripts
                     {
                         m_StaminaBar.currentStamina = Math.Min(m_StaminaBar.maxStamina, m_StaminaBar.currentStamina + Time.deltaTime);
                     })
-                    .GetID(out keybindIds[2])
+                    .GetID(out keybindIds[1])
                 .Bind(KeyCode.LeftControl, KeyCode.RightControl)
                     .Then(() =>
                     {
                         MoveSpeed = 0.5f;
                         m_StaminaBar.currentStamina = Math.Min(m_StaminaBar.maxStamina, m_StaminaBar.currentStamina + Time.deltaTime * 1.25f);
                     })
-                    .GetID(out keybindIds[3]);
+                    .GetID(out keybindIds[2]);
         }
 
         private void OnDestroy()
