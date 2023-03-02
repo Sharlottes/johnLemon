@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/CaughtScene.unity
     guid: ae47d475172710f4f93cd805fe0ae011
   - enabled: 1
-    path: Assets/Scenes/ExitScene.unity
+    path: Assets/Scenes/GameOverScene.unity
     guid: ed013f649c414404fb54cf0bee2d7b3d
   m_configObjects: {}

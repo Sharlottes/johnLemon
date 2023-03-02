@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.UI.Scenes.ExitScene
+namespace Assets.Scripts.UI.Scenes.GameOverScene
 {
     public class SaveButton : MonoBehaviour
     {

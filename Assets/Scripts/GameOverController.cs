@@ -10,6 +10,7 @@ namespace Assets.Scripts
     {
         public AudioClip exitAudio, caughtAudio;
         AudioSource m_AudioSource;
+        public bool isWin;
 
         private void Start()
         {
@@ -17,16 +18,11 @@ namespace Assets.Scripts
         }
         public IEnumerator EndGame(bool isWin)
         {
+            this.isWin = isWin;
             m_AudioSource.clip = (isWin ? exitAudio : caughtAudio);
             m_AudioSource.Play();
 
-            yield return ScreenTransitionController.Instance.ChangeSceneCoroutine<ScreenFadeInTransition, ScreenFadeOutTransition>(isWin ? "ExitScene" : "CaughtScene", 0.5f, 1);
-
-            if (!isWin)
-            {
-                yield return new WaitForSeconds(1);
-                yield return ScreenTransitionController.Instance.ChangeSceneCoroutine<ScreenFadeInTransition, ScreenFadeOutTransition>("GameScene", 0.5f, 1);
-            }
+            yield return ScreenTransitionController.Instance.ChangeSceneCoroutine<ScreenFadeInTransition, ScreenFadeOutTransition>("GameOverScene", 0.5f, 1);
         }
     }
 }
