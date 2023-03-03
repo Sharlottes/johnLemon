@@ -18,14 +18,14 @@ namespace Assets.Scripts.UI.Scenes.GameScene
             nameTextGO.transform.SetSiblingIndex(0);
             m_nameText = nameTextGO.GetComponent<TMP_Text>();
             m_nameText.SetText(playerName);
-            m_nameText.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f));
+            m_nameText.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f));
         }
 
         void Update()
         {
             m_nameText.transform.position = Vector3.Lerp(
                 m_nameText.transform.position, 
-                Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f)), 
+                Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f)), 
                 5 * Time.deltaTime
             );
         }
