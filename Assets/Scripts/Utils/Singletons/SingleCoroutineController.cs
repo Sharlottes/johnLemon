@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Assets.Scripts.Utils;
+using Assets.Scripts;
 
-namespace Assets.Scripts.Structs
+namespace Assets.Scripts.Utils.Singletons
 {
     internal class SingleCoroutineController
     {

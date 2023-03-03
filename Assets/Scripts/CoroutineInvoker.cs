@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Structs.Singleton;
+﻿using Assets.Scripts.Utils.Singletons;
 using System;
 using System.Collections.Generic;
 using System.Linq;

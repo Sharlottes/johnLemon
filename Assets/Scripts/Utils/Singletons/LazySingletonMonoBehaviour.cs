@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Structs.Singleton
+namespace Assets.Scripts.Utils.Singletons
 {
     public abstract class LazySingletonMonoBehaviour<T> : SingletonMonoBehaviour<T> where T : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Assets.Scripts.Structs.Singleton;
+using Assets.Scripts.Utils.Singletons;
 using System.Linq;
 
 namespace Assets.Scripts.Utils.Keybind

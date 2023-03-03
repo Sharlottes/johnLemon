@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Assets.Scripts.Structs.Singleton;
-using Assets.Scripts.Structs;
-using Unity.VisualScripting;
+using Assets.Scripts.Utils.Singletons;
 
 namespace Assets.Scripts
 {

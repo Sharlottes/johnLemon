@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Structs.Singleton;
+using Assets.Scripts.Utils.Singletons;
 using Assets.Scripts.Utils.Transitions;
 
 namespace Assets.Scripts

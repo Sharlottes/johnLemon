@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Assets.Scripts.Structs;
+using Assets.Scripts.Utils.Singletons;
 using Assets.Scripts.UI.Scenes.GameScene;
 
 namespace Assets.Scripts

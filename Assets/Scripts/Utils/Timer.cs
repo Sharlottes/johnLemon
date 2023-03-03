@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using Assets.Scripts.Structs.Singleton;
+using Assets.Scripts.Utils.Singletons;
 using System.Collections;
 
 namespace Assets.Scripts.Utils
