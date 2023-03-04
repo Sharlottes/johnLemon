@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using Assets.Scripts.Utils.Singletons;
 using Assets.Scripts.UI.Scenes.GameScene;
-using Assets.Scripts.Utils;
 
 namespace Assets.Scripts
 {
@@ -16,7 +15,7 @@ namespace Assets.Scripts
         public float detectRange = 2f;
         public GameObject detectIndicatorPref;
 
-        bool m_IsFound, m_IsFinding;
+        bool m_IsFound;
         int m_CurrentWaypointIndex;
 
         Animator m_Animator;
@@ -29,7 +28,7 @@ namespace Assets.Scripts
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
             m_Animator = GetComponent<Animator>();
             m_LookAroundCoroutineController = new(LookAroundAnimation);
-            
+
             GameObject DetectIndicatorGO = Instantiate(detectIndicatorPref, Canvas.Instance.transform);
             DetectIndicatorGO.transform.SetSiblingIndex(0);
             m_detectIndicator = DetectIndicatorGO.GetComponent<PatrolDetectIndicator>();
@@ -51,49 +50,59 @@ namespace Assets.Scripts
             }
         }
 
+        float m_delay;
         void Update()
         {
             m_detectIndicator.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2f));
 
-            m_NavMeshAgent.isStopped = m_IsFinding;
-
-            if (!m_IsFound || !m_detectIndicator.isDetecting || !m_IsFinding) PatrolUpdate();
-
-            if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
-                m_Animator.SetBool("IsFound", m_IsFound);
+            if (m_detectIndicator.indicateLevel == FindLevel.Find)
+            {
+                m_NavMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
+            }
 
             Vector3 targetDirection = Player.Instance.transform.position - transform.position;
             if (m_detectIndicator.indicateLevel == FindLevel.Find)
             {
+
                 if (!m_IsFound)
                 {
                     StarGroup.Instance.StarPoint++;
                     m_IsFound = true;
                 }
 
-                m_NavMeshAgent.SetDestination(Player.Instance.transform.position + Vector3.up);
+                if (m_Animator.parameters.Length > 0 && m_Animator.parameters[0].name == "IsFound")
+                    m_Animator.SetBool("IsFound", true);
+                
+                m_NavMeshAgent.isStopped = false;
+                m_LookAroundCoroutineController.Stop();
             }
             else if (
                 Physics.Raycast(
                     transform.position, targetDirection + Vector3.up,
                     out RaycastHit raycastHit,
                     detectRange
-                ) && raycastHit.collider.transform == Player.Instance.transform
+                ) &&
+                raycastHit.collider.transform == Player.Instance.transform
             )
             {
-                m_IsFinding = true;
                 m_detectIndicator.isDetecting = true;
                 m_LookAroundCoroutineController.Start();
-
-                Timer.Instance.SetTimeout(() =>
-                {
-                    if (m_IsFinding) return;
-                    m_detectIndicator.isDetecting = false;
-                    m_LookAroundCoroutineController.Stop();
-                }, 1f);
+                m_delay = 0.1f;
             }
-            else m_IsFinding = false;
+            else
+            {
+                m_NavMeshAgent.isStopped = m_detectIndicator.indicateLevel == FindLevel.Warn;
 
+                if (m_delay > 0)
+                {
+                    m_delay -= Time.deltaTime;
+                    return;
+                }
+                m_detectIndicator.isDetecting = false;
+                m_LookAroundCoroutineController.Stop();
+
+                PatrolUpdate();
+            }
         }
 
         void PatrolUpdate()

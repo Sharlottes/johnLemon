@@ -11,6 +11,7 @@ namespace Assets.Scripts.UI.Scenes.GameScene
         public Sprite star_default, star_filled;
 
         Image[] m_Images;
+        ParticleSystem[] m_pses;
 
         [SerializeField] int m_StarPoint;
         public int StarPoint
@@ -26,6 +27,7 @@ namespace Assets.Scripts.UI.Scenes.GameScene
         void Start()
         {
             m_Images = GetComponentsInChildren<Image>();
+            m_pses = GetComponentsInChildren<ParticleSystem>();
         }
 
         void UpdateStarImages()
@@ -34,6 +36,7 @@ namespace Assets.Scripts.UI.Scenes.GameScene
             {
                 if (i + 1 <= m_StarPoint)
                 {
+                    if (m_Images[i].sprite == star_default) m_pses[i].Play();
                     m_Images[i].sprite = star_filled;
                 }
                 else
