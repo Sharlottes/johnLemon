@@ -7,14 +7,14 @@ namespace Assets.Scripts.Utils
 {
     internal class Timer : LazyDDOLSingletonMonoBehaviour<Timer>
     {
-        IEnumerator SetTimeoutCoroutine(float durationInSecond, Action callback)
+        IEnumerator SetTimeoutCoroutine(Action callback, float durationInSecond)
         {
             yield return new WaitForSeconds(durationInSecond);
             callback();
         }
-        public void SetTimeout(float durationInSecond, Action callback)
+        public void SetTimeout(Action callback, float durationInSecond)
         {
-            StartCoroutine(SetTimeoutCoroutine(durationInSecond, callback));
+            StartCoroutine(SetTimeoutCoroutine(callback, durationInSecond));
         }
     }
 }
