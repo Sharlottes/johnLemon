@@ -27,10 +27,10 @@
   - [x] 적 인지 딜레이 추가 (UI 추가)
   - [ ] 적 인지 수단 추가: 청각
   - [x] 시야 축소
-- [ ] [포트폴리오에 프로젝트 페이지](https://sharjects-sharlottes.vercel.app/projects/johnLemon) 추가
-  - [ ] 소개 페이지 구성
+- [x] [포트폴리오에 프로젝트 페이지](https://sharjects-sharlottes.vercel.app/projects/johnLemon) 추가 (8일차)
+  - [x] 소개 페이지 구성
   - [ ] WebGL2 빌드로 페이지에서 체험 제공
-  - [ ] 설치 안내 및 기능 구현
+  - [x] 설치 안내 및 기능 구현
 - [ ] 다양한 기믹
   - [ ] 가구 수색: 아이템 획득
   - [ ] 가구 숨기: 어그로 풀림
